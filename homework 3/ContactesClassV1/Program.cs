@@ -1,5 +1,6 @@
 ﻿using ContactesClassV1;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 
 Console.WriteLine("Bienvenido a mi lista de Contactes");
@@ -7,6 +8,7 @@ Console.WriteLine("Bienvenido a mi lista de Contactes");
 
 //names, lastnames, addresses, telephones, emails, ages, bestfriend
 bool runing = true;
+
 List<int> ids = new List<int>();
 Dictionary<int, string> names = new Dictionary<int, string>();
 Dictionary<int, string> lastnames = new Dictionary<int, string>();
@@ -53,13 +55,14 @@ while (runing)
                 {
                     string nameCriterial;
 
-                    Console.WriteLine("Type for search the contact");
+                    Console.WriteLine("Ingrese el nombre del contacto que desea buscar:");
                     nameCriterial = Console.ReadLine();
 
                     var searchContact = people.Where(p => p.Name.ToLower().Contains(nameCriterial)).ToList();
 
                     foreach (var item in searchContact)
                     {
+                        PrintContactsHeader();
                         PrintIndividualContact(searchContact, item.Id);
                     }
 
@@ -67,9 +70,10 @@ while (runing)
                 break;
             case 4: //modify
                 {
+                    bool run = true;
                     string contactModify;
 
-                    Console.WriteLine("Type the name of contact you want to modify:");
+                    Console.WriteLine("Ingrese el nombre del contacto que desea modificar:");
                     contactModify = Console.ReadLine();
 
 
@@ -81,60 +85,73 @@ while (runing)
                         break;
                     }
 
-                    Console.WriteLine("Que desea modificar en el contacto?");
-                    Console.WriteLine(@"1. Modificar Nombre     2. Modificar Apellido    3. Modificar Edad     4. Modificar Direccion   5. Modificar Telefono
+                    var contactExist = searchContact;
+                    do
+                    {
+                        Console.WriteLine("Que desea modificar en el contacto?");
+                        Console.WriteLine(@"1. Modificar Nombre     2. Modificar Apellido    3. Modificar Edad     4. Modificar Direccion   5. Modificar Telefono
                                  6. Modificar Email   7.Modificar si es mejor amigo");
 
-                    Console.WriteLine("Digite el número de la opción deseada: ");
-                    int typeModifyOption = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Digite el número de la opción deseada: ");
+                        int typeModifyOption = Convert.ToInt32(Console.ReadLine());
 
-                    var contactExist = searchContact;
+                        switch (typeModifyOption)
+                        {
+                            case 1:
+                                Console.WriteLine("Digite el nuevo nombre de la persona:");
+                                contactExist.Name = Console.ReadLine();
+                                break;
 
+                            case 2:
+                                Console.WriteLine("Digite el nuevo apellido de la persona:");
+                                contactExist.LastName = Console.ReadLine();
+                                break;
 
-                    switch (typeModifyOption)
-                    {
-                        case 1:
-                            Console.WriteLine("Digite el nuevo nombre de la persona:");
-                            contactExist.Name = Console.ReadLine();
-                            break;
+                            case 3:
+                                Console.WriteLine("Digite la nueva edad de la persona en números:");
+                                contactExist.Age = Convert.ToInt32(Console.ReadLine());
+                                break;
 
-                        case 2:
-                            Console.WriteLine("Digite el nuevo apellido de la persona:");
-                            contactExist.LastName = Console.ReadLine();
-                            break;
+                            case 4:
+                                Console.WriteLine("Digite la nueva dirección:");
+                                contactExist.Address = Console.ReadLine();
+                                break;
 
-                        case 3:
-                            Console.WriteLine("Digite la nueva edad de la persona en números:");
-                            contactExist.Age = Convert.ToInt32(Console.ReadLine());
-                            break;
+                            case 5:
+                                Console.WriteLine("Digite el nuevo teléfono de la persona:");
+                                contactExist.Phone = Console.ReadLine();
+                                break;
 
-                        case 4:
-                            Console.WriteLine("Digite la nueva dirección:");
-                            contactExist.Address = Console.ReadLine();
-                            break;
+                            case 6:
+                                Console.WriteLine("Digite el nuevo email de la persona:");
+                                contactExist.Email = Console.ReadLine();
+                                break;
 
-                        case 5:
-                            Console.WriteLine("Digite el nuevo teléfono de la persona:");
-                            contactExist.Phone = Console.ReadLine();
-                            break;
+                            case 7:
+                                Console.WriteLine("¿Es mejor amigo? 1. Sí, 2. No:");
+                                string bestFriendInput = Console.ReadLine();
+                                contactExist.isBestFriend = (bestFriendInput == "1");
+                                break;
 
-                        case 6:
-                            Console.WriteLine("Digite el nuevo email de la persona:");
-                            contactExist.Email = Console.ReadLine();
-                            break;
+                            default:
+                                Console.WriteLine("El número ingresado no es una opcion valida.");
+                                return;
+                        }
+                     
+                        Console.WriteLine("Desea modificar otra cosa del contacto? 1.Si 2.No");
+                        var userAnswer = int.Parse(Console.ReadLine());
+                        if(userAnswer == 1)
+                        {
+                            run = true;
+                        }
+                        else
+                        {
+                            run = false;
+                        }
 
-                        case 7:
-                            Console.WriteLine("¿Es mejor amigo? 1. Sí, 2. No:");
-                            string bestFriendInput = Console.ReadLine();
-                            contactExist.isBestFriend = (bestFriendInput == "1");
-                            break;
+                    } while (run == true);
 
-                        default:
-                            Console.WriteLine("El número ingresado no es una opcion valida.");
-                            return;
-                    }
-
-                    Console.WriteLine("Contacto modificado Exitosamente");
+                    Console.WriteLine("Contacto modificado Exitosamente!");
 
                 }
                 break;
@@ -142,7 +159,7 @@ while (runing)
                 {
                     string contactDelete;
 
-                    Console.WriteLine("Type the name of contact you want to delete:");
+                    Console.WriteLine("Escriba el nombre del contacto que desea eliminar:");
                     contactDelete = Console.ReadLine();
 
                     var searchContact = people.Where(p => p.Name.ToLower().Contains(contactDelete)).FirstOrDefault();
@@ -222,6 +239,10 @@ while (runing)
         };
 
         people.Add(person);
+
+
     }
+
+    
 }
 
