@@ -20,7 +20,7 @@ int choice = 0;
     
         Console.WriteLine("1. Agregar Contacto   2. Ver Contactos   3. Buscar Contacto");
         Console.WriteLine("4. Modificar Contacto   5. Eliminar Contacto   6. Salir");
-        Console.Write("Elige una opción: ");
+        Console.Write("Elige una opcion: ");
 
     try
     {
